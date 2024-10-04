@@ -22,7 +22,6 @@ function App() {
   const [index,setIndex]=useState(0);
   // The loading of data in the first render
   const [load,setLoad]=useState(false);
-  const [idLoad,setidLoad]=useState(false);
   
   
   // localStorage.clear();
@@ -32,12 +31,14 @@ function App() {
     localStorage.setItem('contacted', JSON.stringify(contacted));
     localStorage.setItem('prepared', JSON.stringify(prepared));
     localStorage.setItem('therapists', JSON.stringify(therapists));
+    localStorage.setItem('index',index.toString());
   };
   function loadCards () {
     const storedBookings = localStorage.getItem('bookings');
     const storedContacted = localStorage.getItem('contacted');
     const storedPrepared = localStorage.getItem('prepared');
     const storedTherapists = localStorage.getItem('therapists');
+    const storedIndex = localStorage.getItem('index');
 
     if (storedBookings) {
       setBookings(JSON.parse(storedBookings));
@@ -50,6 +51,9 @@ function App() {
     }
     if (storedTherapists) {
       setTherapists(JSON.parse(storedTherapists));
+    }
+    if(storedIndex){
+      setIndex(parseInt(storedIndex));
     }
   };
 
@@ -165,7 +169,7 @@ function App() {
       saveCards();
     }
     else{
-      alert("Cannot move left,If you wish to remove the booking press on the delete button");
+      alert("Cannot move left, If you wish to remove the booking press on the delete button");
       return;
     }
 
@@ -187,8 +191,6 @@ function App() {
   if(!load){
     loadCards();
     setLoad(true);
-    setIndex(bookings.length+contacted.length+prepared.length+therapists.length+1);
-    setidLoad(true);
   }
   useEffect(() => {
       saveCards();
