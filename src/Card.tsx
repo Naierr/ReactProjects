@@ -1,7 +1,24 @@
 import React,{useState} from "react";
-import { TrashIcon,PencilSquareIcon , ChevronLeftIcon, ChevronRightIcon, ArrowRightStartOnRectangleIcon,ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/solid";
+import { TrashIcon,PencilSquareIcon , ArrowRightStartOnRectangleIcon,ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/solid";
 
-function Card(props) {
+interface Booking {
+    id: number;
+    name: string;
+    age: number;
+    email: string;
+    phone: number;
+  }
+  
+  // Define the props for the Card component
+  interface CardProps {
+    booking: Booking;
+    keyNo: number;
+    onDelete: (id: number, keyNo: number) => void;
+    onRight: (id: number, keyNo: number) => void;
+    onLeft: (id: number, keyNo: number) => void;
+  }
+
+function Card(props:CardProps) {
     // useState hooks for the editing of the card info
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setName] = useState(props.booking.name);
@@ -13,7 +30,8 @@ function Card(props) {
         setIsEditing(!isEditing);
     }
 
-    function handleUpdate(){
+    function handleUpdate(e: React.MouseEvent<HTMLButtonElement>){
+        e.preventDefault();
         // On clicking save updates 
         let hasErrors = false; // Flag to track validation errors
 
@@ -27,7 +45,7 @@ function Card(props) {
           hasErrors = true;
         }
     
-        if (editedAge && (parseInt(editedAge) < 0 || parseInt(editedAge) > 120)) {
+        if (editedAge && (editedAge < 0 || editedAge > 120)) {
           alert("Age must be between 0 and 120");
           hasErrors = true;
         }
@@ -64,7 +82,7 @@ function Card(props) {
   return (
     <div className="card flex-shrink-0 h-1/5 p-1 mt-0.5  mb-2 bg-white rounded-lg shadow-md">
         {isEditing ? (
-        <div className="w-full items-start sm:w-auto h-10 text-xs">
+        <form className="w-full items-start sm:w-auto h-10 text-xs">
           {/* Edit mode: Input fields for name, age, email, and phone */}
           <label className="text-black font-sans font-semibold justify-start text-xs" htmlFor="name">Edit the details and then save</label> 
           <input className="w-full h-1/2 text-black px-2 border rounded-md" 
@@ -75,7 +93,7 @@ function Card(props) {
           <input className="w-full h-1/2 text-black px-2 py-0.5 border rounded-md" 
                  type="number" 
                  value={editedAge} 
-                 onChange={(e) => setAge(e.target.value)}
+                 onChange={(e) => setAge(parseInt(e.target.value))}
                  placeholder="Enter Age" />
           <input className="w-full h-1/2 text-black px-2 py-0.5 border rounded-md" 
                  type="text" 
@@ -85,10 +103,10 @@ function Card(props) {
           <input className="w-full h-1/2 text-black px-2 py-0.5 border rounded-md" 
                  type="number" 
                  value={editedPhone} 
-                 onChange={(e) => setPhone(e.target.value)}
+                 onChange={(e) => setPhone(parseInt(e.target.value))}
                  placeholder="Enter Phone" />
           <button className="text-black text-xs rounded-md bg-gradient-to-r from-blue-600 to-sky-500" onClick={handleUpdate}>Save</button>
-        </div>
+        </form>
       ) : (
         <div className="px-1">
           {/* Name and age of the person */}

@@ -1,8 +1,6 @@
-import React, { FormEvent ,useState,useEffect} from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import React, {useState,useEffect} from 'react';
 import SubmitForm from './SubmitForm';
 import Card from './Card';
-import { setId } from '@material-tailwind/react/components/Tabs/TabsContext';
 
 function App() {
   interface Booking {
@@ -13,17 +11,18 @@ function App() {
     email:string
   };
   // The Unclaimed Ones
-  const [bookings, setBookings] = useState([]);
+  const [bookings, setBookings] = useState<Booking[]>([]);
   // The first contacted ones
-  const [contacted, setContacted] = useState([]);
+  const [contacted, setContacted] = useState<Booking[]>([]);
   // The preparing work offer ones
-  const [prepared, setPrepared] = useState([]);
+  const [prepared, setPrepared] = useState<Booking[]>([]);
   // The sent to therapists ones
-  const [therapists, setTherapists] = useState([]);
+  const [therapists, setTherapists] = useState<Booking[]>([]);
   // The unique id for each booking
   const [index,setIndex]=useState(0);
   // The loading of data in the first render
   const [load,setLoad]=useState(false);
+  const [idLoad,setidLoad]=useState(false);
   
   
   // localStorage.clear();
@@ -54,13 +53,14 @@ function App() {
     }
   };
 
-  function handleSubmitForm(event) {
+  function handleSubmitForm(formData: { title: string; name: string; age: string; phone: string; email: string }) {
+    
     const newBooking = {
-      id:index,
-      name: event.name,
-      age: event.age,
-      phone: event.phone,
-      email: event.email,
+      id: index,
+      name: formData.name,
+      age: Number(formData.age),  // Convert here if needed
+      phone: Number(formData.phone),  // Convert here if needed
+      email: formData.email,
     };
     setIndex(index+1);
     setBookings((prevBookings) => [...prevBookings, newBooking]);
@@ -70,16 +70,16 @@ function App() {
     if (window.confirm("Are you sure you want to delete this booking?")){
     console.log(index,keyNo);
     if (keyNo === 1) {
-      setBookings(bookings.filter((booking) => booking.id !== index));
+      setBookings(bookings.filter((booking:Booking) => booking.id !== index));
       saveCards();
     } else if (keyNo === 2) {
-      setContacted(contacted.filter((booking) => booking.id !== index));
+      setContacted(contacted.filter((booking:Booking) => booking.id !== index));
       saveCards();
     } else if (keyNo === 3) {
-      setPrepared(prepared.filter((booking) => booking.id !== index));
+      setPrepared(prepared.filter((booking:Booking) => booking.id !== index));
       saveCards();
     } else {
-      setTherapists(therapists.filter((booking) => booking.id !== index));
+      setTherapists(therapists.filter((booking:Booking) => booking.id !== index));
       saveCards();
     }
     saveCards();
@@ -101,7 +101,7 @@ function App() {
       }
       setContacted((prevBookings) => [...prevBookings, element]);
       // Deleting the old location card so no duplicates exists
-      setBookings(bookings.filter((booking) => booking.id !== index));
+      setBookings(bookings.filter((booking:Booking) => booking.id !== index));
       saveCards();
 
     } else if (keyNo === 2) {
@@ -110,7 +110,7 @@ function App() {
       }
       setPrepared((prevBookings) => [...prevBookings, element2]);
       // Deleting the old location card so no duplicates exists
-      setContacted(contacted.filter((booking) => booking.id !== index));
+      setContacted(contacted.filter((booking:Booking) => booking.id !== index));
       saveCards();
 
     } else if (keyNo === 3) {
@@ -119,7 +119,7 @@ function App() {
       }
       setTherapists((prevBookings) => [...prevBookings, element3]);
       // Deleting the old location card so no duplicates exists
-      setPrepared(prepared.filter((booking) => booking.id !== index));
+      setPrepared(prepared.filter((booking:Booking) => booking.id !== index));
       saveCards();
 
 
@@ -134,9 +134,9 @@ function App() {
 
   }
   function leftSwitch(index:number, keyNo:number) {
-    const element2 = contacted.find((booking) => booking.id === index);
-    const element3 = prepared.find((booking) => booking.id === index);
-    const element4= therapists.find((booking) => booking.id === index);
+    const element2 = contacted.find((booking:Booking) => booking.id === index);
+    const element3 = prepared.find((booking:Booking) => booking.id === index);
+    const element4= therapists.find((booking:Booking) => booking.id === index);
     
     console.log(index,keyNo);
     if (keyNo === 4) {
@@ -145,7 +145,7 @@ function App() {
       }
       setPrepared((prevBookings) => [...prevBookings, element4]);
       // Deleting the old location card so no duplicates exists
-      setTherapists(therapists.filter((booking) => booking.id !== index));
+      setTherapists(therapists.filter((booking:Booking) => booking.id !== index));
       saveCards();
     } else if (keyNo === 3) {
       if(!element3){
@@ -153,7 +153,7 @@ function App() {
       }
       setContacted((prevBookings) => [...prevBookings, element3])
       // Deleting the old location card so no duplicates exists
-      setPrepared(prepared.filter((booking) => booking.id !== index));
+      setPrepared(prepared.filter((booking:Booking) => booking.id !== index));
       saveCards();
     } else if (keyNo === 2) {
       if(!element2){
@@ -161,7 +161,7 @@ function App() {
       }
       setBookings((prevBookings) => [...prevBookings, element2])
       // Deleting the old location card so no duplicates exists
-      setContacted(contacted.filter((booking) => booking.id !== index));
+      setContacted(contacted.filter((booking:Booking) => booking.id !== index));
       saveCards();
     }
     else{
@@ -171,7 +171,7 @@ function App() {
 
   }
 
-  function createCard(booking, keyNo) {
+  function createCard(booking:Booking, keyNo:number) {
     return (
       <Card
         key={booking.id}
@@ -187,6 +187,8 @@ function App() {
   if(!load){
     loadCards();
     setLoad(true);
+    setIndex(bookings.length+contacted.length+prepared.length+therapists.length+1);
+    setidLoad(true);
   }
   useEffect(() => {
       saveCards();

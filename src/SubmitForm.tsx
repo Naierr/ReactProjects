@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 
-function SubmitForm (props) {
+interface SubmitFormProps {
+  onSubmit: (formData: { title: string; name: string; age: string; email: string; phone: string }) => void;
+}
+
+function SubmitForm (props : SubmitFormProps) {
   const [title, setTitle] = useState("");
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
 
-  function handleSubmit(e){
+  function handleSubmit(e : React.FormEvent<HTMLFormElement>){
     e.preventDefault();
 
     let hasErrors = false; // Flag to track validation errors
@@ -43,7 +47,7 @@ function SubmitForm (props) {
   };
 
   return (
-    <form className="flex rounded-lg bg-sky-400 mt-2 mb-2 px-2 py-2 border-blue-300 font-sans text-black flex-col gap-4 m-8">
+    <form onSubmit={handleSubmit}className="flex rounded-lg bg-sky-400 mt-2 mb-2 px-2 py-2 border-blue-300 font-sans text-black flex-col gap-4 m-8">
       <b>Form</b>
       <div>
         <label className="text-black font-sans" htmlFor="title">Title:</label>
@@ -101,7 +105,7 @@ function SubmitForm (props) {
         />
       </div>
 
-      <button onClick={handleSubmit} className="bg-blue-500 text-white p-2 rounded-md mt-4">
+      <button type="submit" className="bg-blue-500 text-white p-2 rounded-md mt-4">
         Submit
       </button>
     </form>
