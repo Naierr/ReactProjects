@@ -47,8 +47,8 @@ function SubmitForm (props : SubmitFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit}className="flex rounded-lg bg-sky-400 mt-2 mb-2 px-2 py-2 border-blue-300 font-sans text-black flex-col gap-4 m-8">
-      <b>Form</b>
+    <form onSubmit={handleSubmit} className="flex rounded-lg bg-gradient-to-l from-sky-800 to-sky-400 mt-2 mb-2 px-2 py-2 border-blue-300 font-sans text-black flex-col gap-4 m-8">
+      <b>Booking Submission Form</b>
       <div>
         <label className="text-black font-sans" htmlFor="title">Title:</label>
         <input

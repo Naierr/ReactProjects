@@ -85,7 +85,7 @@ function Card(props:CardProps) {
         <form className="w-full items-start sm:w-auto h-10 text-xs">
           {/* Edit mode: Input fields for name, age, email, and phone */}
           <label className="text-black font-sans font-semibold justify-start text-xs" htmlFor="name">Edit the details and then save</label> 
-          <input className="w-full h-1/2 text-black px-2 border rounded-md" 
+          <input className="w-full h-1/2 text-black items-center px-2 border rounded-md" 
                  type="text"
                  value={editedName} 
                  onChange={(e) => setName(e.target.value)}
@@ -121,21 +121,21 @@ function Card(props:CardProps) {
           </div>
           {/* Handling of the card actions */}
           <div className="flex justify-left items-center mt-1 mb-0">
-            <button onClick={() => handleLeft(props.booking.id, props.keyNo)} className="bg-gradient-to-r mr-2 from-sky-500 to-blue-600 hover:text-green-700 px-2 py-2 bg-green-100 justify-center text-xs rounded-md w-1/6 h-8">
+            <button onClick={() => handleLeft(props.booking.id, props.keyNo)} className="bg-gradient-to-r mr-2 from-sky-500 to-blue-600 hover:text-green-700 px-3 py-2 bg-green-100 justify-center text-xs rounded-md w-1/6 h-8">
                 {/* Left Button */}
                 <ArrowLeftStartOnRectangleIcon className="text-black h-4 items-center font-bold"></ArrowLeftStartOnRectangleIcon>
             </button>
-            <button onClick={() => handleDelete(props.booking.id, props.keyNo)} className="mr-2 bg-gradient-to-r from-sky-500 to-blue-600 hover:text-red-700 px-2 py-2 bg-red-100 items-center rounded-md w-1/6 h-8">
+            <button onClick={() => handleDelete(props.booking.id, props.keyNo)} className="mr-2 bg-gradient-to-r from-sky-500 to-blue-600 hover:text-red-700 px-3 py-2 bg-red-100 items-center rounded-md w-1/6 h-8">
               {/* Delete Button */}
               <TrashIcon className="text-black h-4 items-center font-bold"></TrashIcon>
             </button>
             {/* Edit Button */}
             <button onClick={() => handleEdit()} className="mr-2  
- bg-gradient-to-r from-sky-500 to-blue-600 hover:text-yellow-700 px-2 py-2 bg-yellow-100 rounded-md w-1/6 h-8">
+ bg-gradient-to-r from-sky-500 to-blue-600 hover:text-yellow-700 px-3 py-2 bg-yellow-100 rounded-md w-1/6 h-8">
               <PencilSquareIcon className="text-black h-4 items-center font-bold"></PencilSquareIcon>
             </button>
             {/* Right Button */}
-            <button onClick={() => handleRight(props.booking.id, props.keyNo)} className="bg-gradient-to-r from-sky-500 to-blue-600 hover:text-green-700 px-2 py-2 bg-green-100 justify-center text-xs rounded-md w-1/6 h-8">
+            <button onClick={() => handleRight(props.booking.id, props.keyNo)} className="bg-gradient-to-r from-sky-500 to-blue-600 hover:text-green-700 px-3 py-2 bg-green-100 justify-center text-xs rounded-md w-1/6 h-8">
             <ArrowRightStartOnRectangleIcon className="text-black h-4 items-center font-bold"></ArrowRightStartOnRectangleIcon>
             
             </button>

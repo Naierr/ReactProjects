@@ -213,7 +213,7 @@ function App() {
         <div className="flex flex-col w-full text-center">
           <div className="flex flex-row h-full justify-between gap-2">
             {/* Unclaimed */}
-            <div className="flex-1 border border-blue-300 rounded-lg ">
+            <div className="flex-1 border mr-2 border-blue-300 rounded-lg ">
               <div className="flex justify-between items-center bg-sky-100 mb-0">
                 <b className="ml-2 text-black text-sm mt-2">Unclaimed</b>
                 <b className="mr-2 text-black text-sm">{bookings.length}</b>
@@ -223,7 +223,7 @@ function App() {
               </div>
             </div>
             {/* First Contacted */}
-            <div className="flex-1 border bg-sky-200 rounded-lg border-blue-300">
+            <div className="flex-1 border mr-1 bg-sky-200 rounded-lg border-blue-300">
               <div className="flex justify-between items-center mb-0">
                 <b className="ml-2 text-black text-sm mt-2">First Contact</b>
                 <b className="mr-2 text-black text-sm">{contacted.length}</b>
@@ -233,7 +233,7 @@ function App() {
               </div>
             </div>
             {/* Preparing work offer */}
-            <div className="flex-1 border bg-sky-200 rounded-lg border-blue-300">
+            <div className="flex-1 border mr-1 bg-sky-200 rounded-lg border-blue-300">
               <div className="flex justify-between items-center mb-0">
                 <b className="ml-2 text-black text-sm mt-2">Preparing Work Offer</b>
                 <b className="mr-2 text-black text-sm">{prepared.length}</b>
