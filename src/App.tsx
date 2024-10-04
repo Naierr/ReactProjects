@@ -1,4 +1,4 @@
-import React, { useState,useEffect} from 'react';
+import React, { FormEvent ,useState,useEffect} from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import SubmitForm from './SubmitForm';
 import Card from './Card';
@@ -90,9 +90,43 @@ function App() {
       }
       setTherapists((prevBookings) => [...prevBookings, element3]);
     }
+    else{
+      alert("Cannot move right");
+      return;
+    }
+    // No need to delete when pressing right at the end just get an alert that you cannot move more right
     deleteBooking(index,keyNo);
-    saveCards();
+    // saveCards();
 
+  }
+  function leftSwitch(index:number, keyNo:number) {
+    
+    const element2 = contacted.find((booking) => booking.id === index);
+    const element3 = prepared.find((booking) => booking.id === index);
+    const element4= therapists.find((booking) => booking.id === index);
+    
+    console.log(index,keyNo);
+    if (keyNo === 4) {
+      if(!element4){
+        return;
+      }
+      setPrepared((prevBookings) => [...prevBookings, element4]);
+    } else if (keyNo === 3) {
+      if(!element3){
+        return;
+      }
+      setContacted((prevBookings) => [...prevBookings, element3])
+    } else if (keyNo === 2) {
+      if(!element2){
+        return;
+      }
+      setBookings((prevBookings) => [...prevBookings, element2])
+    }
+    else{
+      alert("Cannot move left");
+      return;
+    }
+    deleteBooking(index,keyNo);
   }
 
   function createCard(booking, keyNo) {
@@ -103,18 +137,19 @@ function App() {
         keyNo={keyNo}
         onDelete={deleteBooking}
         onRight={rightSwitch}
+        onLeft={leftSwitch}
       />
     );
   }
-  useEffect(() => {
-    loadCards();
+  // useEffect(() => {
+  //   loadCards();
 
-    const saveInterval = setInterval(() => {
-      saveCards();
-    }, 1000);
+  //   const saveInterval = setInterval(() => {
+  //     saveCards();
+  //   }, 1000);
 
-    return () => clearInterval(saveInterval);
-  }, []);
+  //   return () => clearInterval(saveInterval);
+  // }, []);
 
   return (
     <div className="bg-sky-100 font-sans min-h-screen p-5">
@@ -145,7 +180,7 @@ function App() {
                 <b className="ml-2 text-black text-sm mt-2">First Contact</b>
                 <b className="mr-2 text-black text-sm">{contacted.length}</b>
               </div>
-              <div className=" p-1 h-[300px] overflow-y-auto scrollbar-thin mt-0">
+              <div className=" p-1 h-[600px] overflow-y-auto scrollbar-thin mt-0">
                 {contacted.map((booking) => createCard(booking, 2))}
               </div>
             </div>
