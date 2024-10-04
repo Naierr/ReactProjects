@@ -60,7 +60,7 @@ function App() {
   }
 
   function deleteBooking(index:number, keyNo:number) {
-    
+    if (window.confirm("Are you sure you want to delete this booking?")){
     console.log(index,keyNo);
     if (keyNo === 1) {
       setBookings(bookings.filter((booking) => booking.id !== index));
@@ -76,7 +76,10 @@ function App() {
       saveCards();
     }
     saveCards();
-
+  }
+  else{
+    console.log("They're not cancelling");
+  }
   }
 
   function rightSwitch(index:number, keyNo:number) {
