@@ -5,6 +5,13 @@ import Card from './Card';
 import { setId } from '@material-tailwind/react/components/Tabs/TabsContext';
 
 function App() {
+  interface Booking {
+    id: number,
+    name : string,
+    age: number,
+    phone:number,
+    email:string
+  };
   // The Unclaimed Ones
   const [bookings, setBookings] = useState([]);
   // The first contacted ones
@@ -84,16 +91,17 @@ function App() {
 
   function rightSwitch(index:number, keyNo:number) {
     
-    const element = bookings.find((booking) => booking.id === index);
-    const element2 = contacted.find((booking) => booking.id === index);
-    const element3 = prepared.find((booking) => booking.id === index);
+    const element = bookings.find((booking:Booking) => booking.id === index);
+    const element2 = contacted.find((booking:Booking) => booking.id === index);
+    const element3 = prepared.find((booking:Booking) => booking.id === index);
     console.log(index,keyNo);
     if (keyNo === 1) {
       if(!element){
         return;
       }
       setContacted((prevBookings) => [...prevBookings, element]);
-      deleteBooking(index,keyNo);
+      // Deleting the old location card so no duplicates exists
+      setBookings(bookings.filter((booking) => booking.id !== index));
       saveCards();
 
     } else if (keyNo === 2) {
@@ -101,7 +109,8 @@ function App() {
         return;
       }
       setPrepared((prevBookings) => [...prevBookings, element2]);
-      deleteBooking(index,keyNo);
+      // Deleting the old location card so no duplicates exists
+      setContacted(contacted.filter((booking) => booking.id !== index));
       saveCards();
 
     } else if (keyNo === 3) {
@@ -109,7 +118,8 @@ function App() {
         return;
       }
       setTherapists((prevBookings) => [...prevBookings, element3]);
-      deleteBooking(index,keyNo);
+      // Deleting the old location card so no duplicates exists
+      setPrepared(prepared.filter((booking) => booking.id !== index));
       saveCards();
 
 
@@ -119,7 +129,7 @@ function App() {
       alert("Cannot move right, If you wish to remove the booking press on the delete button");
       return;
     }
-    // No need to delete when pressing right at the end just get an alert that you cannot move more right
+
     
 
   }
@@ -134,21 +144,24 @@ function App() {
         return;
       }
       setPrepared((prevBookings) => [...prevBookings, element4]);
-      deleteBooking(index,keyNo);
+      // Deleting the old location card so no duplicates exists
+      setTherapists(therapists.filter((booking) => booking.id !== index));
       saveCards();
     } else if (keyNo === 3) {
       if(!element3){
         return;
       }
       setContacted((prevBookings) => [...prevBookings, element3])
-      deleteBooking(index,keyNo);
+      // Deleting the old location card so no duplicates exists
+      setPrepared(prepared.filter((booking) => booking.id !== index));
       saveCards();
     } else if (keyNo === 2) {
       if(!element2){
         return;
       }
       setBookings((prevBookings) => [...prevBookings, element2])
-      deleteBooking(index,keyNo);
+      // Deleting the old location card so no duplicates exists
+      setContacted(contacted.filter((booking) => booking.id !== index));
       saveCards();
     }
     else{
