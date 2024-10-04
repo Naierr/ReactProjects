@@ -2,6 +2,7 @@ import React, { FormEvent ,useState,useEffect} from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import SubmitForm from './SubmitForm';
 import Card from './Card';
+import { setId } from '@material-tailwind/react/components/Tabs/TabsContext';
 
 function App() {
   // The Unclaimed Ones
@@ -12,6 +13,13 @@ function App() {
   const [prepared, setPrepared] = useState([]);
   // The sent to therapists ones
   const [therapists, setTherapists] = useState([]);
+  // The unique id for each booking
+  const [index,setIndex]=useState(0);
+  // The loading of data in the first render
+  const [load,setLoad]=useState(false);
+  
+  
+  // localStorage.clear();
   
   function saveCards() {
     localStorage.setItem('bookings', JSON.stringify(bookings));
@@ -40,67 +48,79 @@ function App() {
   };
 
   function handleSubmitForm(event) {
-    const id = uuidv4();
-    console.log(event);
-
     const newBooking = {
-      id,
+      id:index,
       name: event.name,
       age: event.age,
       phone: event.phone,
       email: event.email,
     };
+    setIndex(index+1);
     setBookings((prevBookings) => [...prevBookings, newBooking]);
-    saveCards();
   }
 
   function deleteBooking(index:number, keyNo:number) {
+    
     console.log(index,keyNo);
     if (keyNo === 1) {
       setBookings(bookings.filter((booking) => booking.id !== index));
+      saveCards();
     } else if (keyNo === 2) {
       setContacted(contacted.filter((booking) => booking.id !== index));
+      saveCards();
     } else if (keyNo === 3) {
       setPrepared(prepared.filter((booking) => booking.id !== index));
+      saveCards();
     } else {
       setTherapists(therapists.filter((booking) => booking.id !== index));
+      saveCards();
     }
     saveCards();
+
   }
 
   function rightSwitch(index:number, keyNo:number) {
+    
     const element = bookings.find((booking) => booking.id === index);
     const element2 = contacted.find((booking) => booking.id === index);
     const element3 = prepared.find((booking) => booking.id === index);
-    
     console.log(index,keyNo);
     if (keyNo === 1) {
       if(!element){
         return;
       }
       setContacted((prevBookings) => [...prevBookings, element]);
+      deleteBooking(index,keyNo);
+      saveCards();
+
     } else if (keyNo === 2) {
       if(!element2){
         return;
       }
       setPrepared((prevBookings) => [...prevBookings, element2]);
+      deleteBooking(index,keyNo);
+      saveCards();
+
     } else if (keyNo === 3) {
       if(!element3){
         return;
       }
       setTherapists((prevBookings) => [...prevBookings, element3]);
+      deleteBooking(index,keyNo);
+      saveCards();
+
+
     }
     else{
-      alert("Cannot move right");
+      // No need to delete when pressing right at the end just get an alert that you cannot move more right
+      alert("Cannot move right, If you wish to remove the booking press on the delete button");
       return;
     }
     // No need to delete when pressing right at the end just get an alert that you cannot move more right
-    deleteBooking(index,keyNo);
-    // saveCards();
+    
 
   }
   function leftSwitch(index:number, keyNo:number) {
-    
     const element2 = contacted.find((booking) => booking.id === index);
     const element3 = prepared.find((booking) => booking.id === index);
     const element4= therapists.find((booking) => booking.id === index);
@@ -111,22 +131,28 @@ function App() {
         return;
       }
       setPrepared((prevBookings) => [...prevBookings, element4]);
+      deleteBooking(index,keyNo);
+      saveCards();
     } else if (keyNo === 3) {
       if(!element3){
         return;
       }
       setContacted((prevBookings) => [...prevBookings, element3])
+      deleteBooking(index,keyNo);
+      saveCards();
     } else if (keyNo === 2) {
       if(!element2){
         return;
       }
       setBookings((prevBookings) => [...prevBookings, element2])
+      deleteBooking(index,keyNo);
+      saveCards();
     }
     else{
-      alert("Cannot move left");
+      alert("Cannot move left,If you wish to remove the booking press on the delete button");
       return;
     }
-    deleteBooking(index,keyNo);
+
   }
 
   function createCard(booking, keyNo) {
@@ -140,16 +166,18 @@ function App() {
         onLeft={leftSwitch}
       />
     );
+    saveCards();
   }
-  // useEffect(() => {
-  //   loadCards();
+  if(!load){
+    loadCards();
+    setLoad(true);
+  }
+  useEffect(() => {
+      saveCards();
 
-  //   const saveInterval = setInterval(() => {
-  //     saveCards();
-  //   }, 1000);
-
-  //   return () => clearInterval(saveInterval);
-  // }, []);
+  },[setTimeout(() => {
+    
+  }, 1000)]);
 
   return (
     <div className="bg-sky-100 font-sans min-h-screen p-5">
